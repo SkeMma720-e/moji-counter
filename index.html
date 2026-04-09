@@ -5,6 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文字数カウンター｜無料でリアルタイム計測</title>
   <meta name="description" content="テキストの文字数・単語数・行数をリアルタイムで無料カウント。Twitter/X・Instagram・LINEなどSNSの文字制限チェックにも対応。">
+  <link rel="canonical" href="https://moji-counter-tau.vercel.app/" />
+
+  <!-- OGP -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="文字数カウンター｜無料でリアルタイム計測" />
+  <meta property="og:description" content="テキストの文字数・単語数・行数をリアルタイムで無料カウント。Twitter/X・Instagram・LINEなどSNSの文字制限チェックにも対応。" />
+  <meta property="og:url" content="https://moji-counter-tau.vercel.app/" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="文字数カウンター｜無料でリアルタイム計測" />
+  <meta name="twitter:description" content="テキストの文字数・単語数・行数をリアルタイムで無料カウント。SNS文字制限チェックにも対応。" />
+
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "文字数カウンター",
+    "url": "https://moji-counter-tau.vercel.app/",
+    "description": "テキストの文字数・単語数・行数をリアルタイムで無料カウント。SNSの文字制限チェックにも対応。",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "inLanguage": "ja"
+  }
+  </script>
+
   <meta name="google-site-verification" content="plabUcPNcHgLrxvMnwP0nlNncGMgZyoBcpAR-J7iHJs" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7388920204292911" crossorigin="anonymous"></script>
   <style>
@@ -39,7 +70,7 @@
       align-items: center;
       gap: 10px;
     }
-    .logo { font-weight: 800; font-size: 1.15rem; color: var(--primary); }
+    .logo { font-weight: 800; font-size: 1.15rem; color: var(--primary); text-decoration: none; }
     .logo span { color: var(--text); }
 
     /* AD BANNER (top) */
@@ -284,7 +315,11 @@
 <body>
 
 <header>
-  <div class="logo">文字数<span>カウンター</span></div>
+  <a href="/" class="logo">文字数<span>カウンター</span></a>
+  <nav style="display:flex;gap:20px;margin-left:auto;">
+    <a href="/how-to-use.html" style="color:#6B7280;text-decoration:none;font-size:0.88rem;">使い方</a>
+    <a href="/faq.html" style="color:#6B7280;text-decoration:none;font-size:0.88rem;">よくある質問</a>
+  </nav>
 </header>
 
 <!-- 広告枠（上部バナー） -->
