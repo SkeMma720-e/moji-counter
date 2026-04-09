@@ -152,54 +152,42 @@
       gap: 8px;
     }
 
-    .sns-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .sns-card {
+    .sns-table {
+      width: 100%;
+      border-collapse: collapse;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .sns-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .sns-info { flex: 1; min-width: 0; }
-    .sns-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-
-    .progress-bar {
-      height: 6px;
-      background: #E5E7EB;
-      border-radius: 999px;
+      border-radius: 14px;
       overflow: hidden;
+      margin-bottom: 24px;
     }
-    .progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.2s, background 0.2s;
-    }
-
-    .sns-count {
+    .sns-table th {
+      text-align: left;
+      padding: 10px 16px;
       font-size: 0.78rem;
       color: var(--muted);
-      margin-top: 4px;
+      background: #F9FAFB;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
     }
+    .sns-table td {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sns-table tr:last-child td { border-bottom: none; }
+    .sns-table td:nth-child(2) { color: var(--muted); font-size: 0.85rem; }
+    .sns-table td:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+    .sns-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+    .sns-ok  { background: #D1FAE5; color: #065F46; }
+    .sns-warn { background: #FEF3C7; color: #92400E; }
+    .sns-over { background: #FEE2E2; color: #991B1B; }
 
     /* BREAKDOWN */
     .breakdown {
@@ -333,7 +321,16 @@
 
   <!-- SNS LIMITS -->
   <div class="section-title">SNS 文字制限チェック</div>
-  <div class="sns-grid" id="snsGrid"></div>
+  <table class="sns-table">
+    <thead>
+      <tr>
+        <th>サービス</th>
+        <th>上限</th>
+        <th>現在の文字数</th>
+      </tr>
+    </thead>
+    <tbody id="snsGrid"></tbody>
+  </table>
 
   <!-- BREAKDOWN -->
   <div class="section-title">内訳</div>
@@ -414,20 +411,15 @@
     { name: 'Facebook', icon: '👍', color: '#1877F2', bg: '#EFF4FF', limit: 63206 },
   ];
 
-  // SNSカード生成
+  // SNSテーブル生成
   const snsGrid = document.getElementById('snsGrid');
   SNS.forEach((s, i) => {
     snsGrid.innerHTML += `
-      <div class="sns-card">
-        <div class="sns-icon" style="background:${s.bg};color:${s.color}">${s.icon}</div>
-        <div class="sns-info">
-          <div class="sns-name">${s.name}</div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="prog-${i}" style="width:0%;background:${s.color}"></div>
-          </div>
-          <div class="sns-count" id="sns-count-${i}">0 / ${s.limit.toLocaleString()}</div>
-        </div>
-      </div>`;
+      <tr>
+        <td><strong>${s.icon} ${s.name}</strong></td>
+        <td>${s.limit.toLocaleString()}文字</td>
+        <td><span class="sns-badge sns-ok" id="sns-count-${i}">0 / ${s.limit.toLocaleString()}</span></td>
+      </tr>`;
   });
 
   function getByteLength(str) {
@@ -462,12 +454,10 @@
 
     // SNS
     SNS.forEach((s, i) => {
-      const pct = Math.min(100, (total / s.limit) * 100);
-      const fill = document.getElementById(`prog-${i}`);
-      fill.style.width = pct + '%';
-      fill.style.background = pct >= 100 ? '#EF4444' : pct >= 80 ? '#F59E0B' : s.color;
-      document.getElementById(`sns-count-${i}`).textContent =
-        `${total.toLocaleString()} / ${s.limit.toLocaleString()}${pct >= 100 ? ' ⚠️ 超過' : ''}`;
+      const pct = total / s.limit;
+      const el = document.getElementById(`sns-count-${i}`);
+      el.textContent = `${total.toLocaleString()} / ${s.limit.toLocaleString()}`;
+      el.className = 'sns-badge ' + (pct >= 1 ? 'sns-over' : pct >= 0.8 ? 'sns-warn' : 'sns-ok');
     });
   }
 
