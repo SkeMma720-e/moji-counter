@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文字数カウンター｜無料でリアルタイム計測</title>
+  <meta name="description" content="テキストの文字数・単語数・行数をリアルタイムで無料カウント。Twitter/X・Instagram・LINEなどSNSの文字制限チェックにも対応。">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #818CF8;
+      --bg: #F8F9FF;
+      --card: #FFFFFF;
+      --text: #1E1B4B;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo { font-weight: 800; font-size: 1.15rem; color: var(--primary); }
+    .logo span { color: var(--text); }
+
+    /* AD BANNER (top) */
+    .ad-banner {
+      background: #F3F4F6;
+      border: 2px dashed #D1D5DB;
+      border-radius: 8px;
+      text-align: center;
+      padding: 20px;
+      color: #9CA3AF;
+      font-size: 0.85rem;
+      margin: 16px auto;
+      max-width: 728px;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; }
+
+    /* TEXTAREA */
+    .textarea-wrap { position: relative; }
+    textarea {
+      width: 100%;
+      height: 240px;
+      padding: 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      line-height: 1.7;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      color: var(--text);
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--primary-light); }
+    textarea::placeholder { color: #CBD5E1; }
+
+    .textarea-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-outline:hover { border-color: var(--primary-light); color: var(--primary); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #4338CA; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .stat-card:hover { box-shadow: 0 4px 20px rgba(79,70,229,0.1); }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* SNS LIMITS */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 24px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .sns-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sns-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .sns-info { flex: 1; min-width: 0; }
+    .sns-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+
+    .progress-bar {
+      height: 6px;
+      background: #E5E7EB;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .sns-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* BREAKDOWN */
+    .breakdown {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-label { color: var(--muted); }
+    .breakdown-val { font-weight: 700; color: var(--text); }
+
+    /* AD SIDE */
+    .ad-side {
+      background: #F3F4F6;
+      border: 2px dashed #D1D5DB;
+      border-radius: 8px;
+      text-align: center;
+      padding: 40px 16px;
+      color: #9CA3AF;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    /* INFO */
+    .info-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .info-section h2 { font-size: 1.1rem; margin-bottom: 12px; }
+    .info-section p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px; }
+    .info-section ul { color: var(--muted); font-size: 0.9rem; line-height: 1.8; padding-left: 20px; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* コピー成功トースト */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1E1B4B;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">文字数<span>カウンター</span></div>
+</header>
+
+<!-- 広告枠（上部バナー） -->
+<div style="max-width:860px;margin:0 auto;padding:16px 16px 0;">
+  <div class="ad-banner">広告スペース（728×90）</div>
+</div>
+
+<main>
+  <h1>文字数カウンター</h1>
+  <p class="subtitle">テキストを入力するとリアルタイムで文字数を計測します。SNSの投稿チェックにも。</p>
+
+  <!-- TEXTAREA -->
+  <div class="textarea-wrap">
+    <textarea id="inputText" placeholder="ここにテキストを入力または貼り付けてください..."></textarea>
+  </div>
+  <div class="textarea-actions">
+    <button class="btn btn-outline" onclick="copyText()">コピー</button>
+    <button class="btn btn-outline" onclick="clearText()">クリア</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num" id="totalChars">0</div>
+      <div class="stat-label">文字数（全体）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="noSpaceChars">0</div>
+      <div class="stat-label">文字数（空白除く）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="wordCount">0</div>
+      <div class="stat-label">単語数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="lineCount">0</div>
+      <div class="stat-label">行数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="paraCount">0</div>
+      <div class="stat-label">段落数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="byteCount">0</div>
+      <div class="stat-label">バイト数（UTF-8）</div>
+    </div>
+  </div>
+
+  <!-- SNS LIMITS -->
+  <div class="section-title">SNS 文字制限チェック</div>
+  <div class="sns-grid" id="snsGrid"></div>
+
+  <!-- BREAKDOWN -->
+  <div class="section-title">内訳</div>
+  <div class="breakdown">
+    <div class="breakdown-row">
+      <span class="breakdown-label">ひらがな</span>
+      <span class="breakdown-val" id="hiragana">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">カタカナ</span>
+      <span class="breakdown-val" id="katakana">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">漢字</span>
+      <span class="breakdown-val" id="kanji">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">英数字</span>
+      <span class="breakdown-val" id="alphaNum">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">記号・その他</span>
+      <span class="breakdown-val" id="symbols">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">スペース（半角・全角）</span>
+      <span class="breakdown-val" id="spaces">0</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">改行</span>
+      <span class="breakdown-val" id="newlines">0</span>
+    </div>
+  </div>
+
+  <!-- 広告（コンテンツ内） -->
+  <div class="ad-banner">広告スペース（336×280）</div>
+
+  <!-- SEO用説明文 -->
+  <div class="info-section">
+    <h2>文字数カウンターの使い方</h2>
+    <p>上のテキストエリアにカウントしたい文字を入力または貼り付けるだけで、自動的に文字数を計測します。</p>
+    <ul>
+      <li>Twitter/X・Instagram・LINEなどのSNS投稿の文字数確認</li>
+      <li>レポート・論文・作文の文字数管理</li>
+      <li>履歴書・エントリーシートの字数制限チェック</li>
+      <li>ブログ記事・メルマガの文字数把握</li>
+    </ul>
+  </div>
+
+  <div class="info-section">
+    <h2>SNSごとの文字数制限</h2>
+    <p>各SNSには投稿できる文字数の上限があります。このツールでは入力したテキストが各SNSの制限内かどうかをリアルタイムで確認できます。</p>
+    <ul>
+      <li><strong>Twitter/X</strong>：全角・半角問わず140文字</li>
+      <li><strong>Instagram キャプション</strong>：2,200文字</li>
+      <li><strong>Facebook 投稿</strong>：63,206文字</li>
+      <li><strong>LINE メッセージ</strong>：1,000文字</li>
+    </ul>
+  </div>
+</main>
+
+<!-- 広告（フッター上） -->
+<div style="max-width:860px;margin:0 auto;padding:0 16px 16px;">
+  <div class="ad-banner">広告スペース（728×90）</div>
+</div>
+
+<footer>
+  <p>&copy; 2025 文字数カウンター</p>
+</footer>
+
+<div class="toast" id="toast">コピーしました！</div>
+
+<script>
+  const SNS = [
+    { name: 'Twitter / X', icon: '🐦', color: '#1D9BF0', bg: '#EFF9FF', limit: 140 },
+    { name: 'Instagram', icon: '📷', color: '#E1306C', bg: '#FFF0F5', limit: 2200 },
+    { name: 'LINE', icon: '💬', color: '#06C755', bg: '#F0FFF4', limit: 1000 },
+    { name: 'Facebook', icon: '👍', color: '#1877F2', bg: '#EFF4FF', limit: 63206 },
+  ];
+
+  // SNSカード生成
+  const snsGrid = document.getElementById('snsGrid');
+  SNS.forEach((s, i) => {
+    snsGrid.innerHTML += `
+      <div class="sns-card">
+        <div class="sns-icon" style="background:${s.bg};color:${s.color}">${s.icon}</div>
+        <div class="sns-info">
+          <div class="sns-name">${s.name}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="prog-${i}" style="width:0%;background:${s.color}"></div>
+          </div>
+          <div class="sns-count" id="sns-count-${i}">0 / ${s.limit.toLocaleString()}</div>
+        </div>
+      </div>`;
+  });
+
+  function getByteLength(str) {
+    return new TextEncoder().encode(str).length;
+  }
+
+  function update() {
+    const text = document.getElementById('inputText').value;
+    const total = text.length;
+    const noSpace = text.replace(/[\s　]/g, '').length;
+    const lines = text === '' ? 0 : text.split('\n').length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/[\s\u3000]+/).filter(w => w).length;
+    const paras = text.trim() === '' ? 0 : text.trim().split(/\n\s*\n/).filter(p => p.trim()).length;
+    const bytes = getByteLength(text);
+
+    document.getElementById('totalChars').textContent = total.toLocaleString();
+    document.getElementById('noSpaceChars').textContent = noSpace.toLocaleString();
+    document.getElementById('lineCount').textContent = lines.toLocaleString();
+    document.getElementById('wordCount').textContent = words.toLocaleString();
+    document.getElementById('paraCount').textContent = (paras || (text.trim() ? 1 : 0)).toLocaleString();
+    document.getElementById('byteCount').textContent = bytes.toLocaleString();
+
+    // 内訳
+    document.getElementById('hiragana').textContent = (text.match(/[\u3041-\u3096]/g) || []).length.toLocaleString();
+    document.getElementById('katakana').textContent = (text.match(/[\u30A1-\u30FA]/g) || []).length.toLocaleString();
+    document.getElementById('kanji').textContent = (text.match(/[\u4E00-\u9FFF\u3400-\u4DBF]/g) || []).length.toLocaleString();
+    document.getElementById('alphaNum').textContent = (text.match(/[a-zA-Z0-9ａ-ｚＡ-Ｚ０-９]/g) || []).length.toLocaleString();
+    document.getElementById('spaces').textContent = (text.match(/[ \t　]/g) || []).length.toLocaleString();
+    document.getElementById('newlines').textContent = (text.match(/\n/g) || []).length.toLocaleString();
+    const known = (text.match(/[\u3041-\u3096\u30A1-\u30FA\u4E00-\u9FFF\u3400-\u4DBFa-zA-Z0-9ａ-ｚＡ-Ｚ０-９ \t　\n]/g) || []).length;
+    document.getElementById('symbols').textContent = Math.max(0, total - known).toLocaleString();
+
+    // SNS
+    SNS.forEach((s, i) => {
+      const pct = Math.min(100, (total / s.limit) * 100);
+      const fill = document.getElementById(`prog-${i}`);
+      fill.style.width = pct + '%';
+      fill.style.background = pct >= 100 ? '#EF4444' : pct >= 80 ? '#F59E0B' : s.color;
+      document.getElementById(`sns-count-${i}`).textContent =
+        `${total.toLocaleString()} / ${s.limit.toLocaleString()}${pct >= 100 ? ' ⚠️ 超過' : ''}`;
+    });
+  }
+
+  document.getElementById('inputText').addEventListener('input', update);
+  update();
+
+  function clearText() {
+    document.getElementById('inputText').value = '';
+    update();
+  }
+
+  function copyText() {
+    const text = document.getElementById('inputText').value;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
