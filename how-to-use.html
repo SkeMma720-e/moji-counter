@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使い方｜文字数カウンター</title>
+  <meta name="description" content="文字数カウンターの使い方を説明します。">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4F46E5;
+      --bg: #F8F9FF;
+      --card: #FFFFFF;
+      --text: #1E1B4B;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+    }
+    body { font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; }
+    .logo { font-weight: 800; font-size: 1.15rem; color: var(--primary); text-decoration: none; }
+    .logo span { color: var(--text); }
+    main { max-width: 720px; margin: 40px auto; padding: 0 16px 60px; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 24px; }
+    h2 { font-size: 1.05rem; font-weight: 700; margin: 32px 0 10px; padding-left: 12px; border-left: 3px solid var(--primary); }
+    p, li { font-size: 0.93rem; color: #374151; line-height: 1.8; }
+    ul, ol { padding-left: 20px; margin-top: 8px; }
+    li { margin-bottom: 6px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 12px; }
+    footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--border); background: var(--card); }
+    footer a { color: var(--primary); text-decoration: none; }
+  </style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">文字数<span>カウンター</span></a>
+</header>
+<main>
+  <h1>使い方</h1>
+
+  <h2>基本的な使い方</h2>
+  <div class="card">
+    <ol>
+      <li>ページ上部のテキストエリアに、カウントしたい文字を入力または貼り付けます。</li>
+      <li>入力と同時に文字数・単語数・行数などが自動で更新されます。</li>
+      <li>「クリア」ボタンでテキストエリアをリセットできます。</li>
+      <li>「コピー」ボタンで入力中のテキストをクリップボードにコピーできます。</li>
+    </ol>
+  </div>
+
+  <h2>カウント項目の説明</h2>
+  <div class="card">
+    <ul>
+      <li><strong>文字数（全体）</strong>：スペースや改行を含むすべての文字数</li>
+      <li><strong>文字数（空白除く）</strong>：半角・全角スペースを除いた文字数</li>
+      <li><strong>単語数</strong>：スペース区切りで分割した単語の数</li>
+      <li><strong>行数</strong>：改行で区切られた行の数</li>
+      <li><strong>段落数</strong>：空行で区切られた段落の数</li>
+      <li><strong>バイト数</strong>：UTF-8 エンコードでのバイト数</li>
+    </ul>
+  </div>
+
+  <h2>SNS 文字制限チェック</h2>
+  <div class="card">
+    <p>入力した文字数が各 SNS の制限に対してどの程度かをリアルタイムで確認できます。制限の 80% を超えると黄色、制限を超えると赤で表示されます。</p>
+    <ul style="margin-top:12px;">
+      <li>Twitter / X：140文字</li>
+      <li>Instagram キャプション：2,200文字</li>
+      <li>LINE メッセージ：1,000文字</li>
+      <li>Facebook 投稿：63,206文字</li>
+    </ul>
+  </div>
+
+  <h2>文字種別の内訳</h2>
+  <div class="card">
+    <p>ひらがな・カタカナ・漢字・英数字・記号・スペース・改行の内訳を確認できます。論文やレポートで文字種の比率を確認したいときに便利です。</p>
+  </div>
+</main>
+<footer>
+  <p>&copy; 2025 文字数カウンター · <a href="/">トップ</a> · <a href="/faq.html">よくある質問</a> · <a href="/privacy-policy.html">プライバシーポリシー</a> · <a href="/contact.html">お問い合わせ</a></p>
+</footer>
+</body>
+</html>

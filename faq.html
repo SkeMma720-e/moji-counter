@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>よくある質問｜文字数カウンター</title>
+  <meta name="description" content="文字数カウンターに関するよくある質問をまとめています。">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4F46E5;
+      --bg: #F8F9FF;
+      --card: #FFFFFF;
+      --text: #1E1B4B;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+    }
+    body { font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 24px; }
+    .logo { font-weight: 800; font-size: 1.15rem; color: var(--primary); text-decoration: none; }
+    .logo span { color: var(--text); }
+    main { max-width: 720px; margin: 40px auto; padding: 0 16px 60px; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 32px; }
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .faq-item + .faq-item { margin-top: 8px; }
+    input[type="checkbox"] { display: none; }
+    .faq-q {
+      padding: 18px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-q::after { content: '+'; font-size: 1.2rem; color: var(--primary); flex-shrink: 0; }
+    input:checked ~ .faq-q::after { content: '−'; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    input:checked ~ .faq-a { max-height: 300px; }
+    .faq-a-inner { padding: 0 20px 18px; font-size: 0.9rem; color: #374151; line-height: 1.8; }
+    footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--border); background: var(--card); }
+    footer a { color: var(--primary); text-decoration: none; }
+  </style>
+</head>
+<body>
+<header>
+  <a href="/" class="logo">文字数<span>カウンター</span></a>
+</header>
+<main>
+  <h1>よくある質問</h1>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <input type="checkbox" id="q1">
+      <label class="faq-q" for="q1">無料で使えますか？</label>
+      <div class="faq-a"><div class="faq-a-inner">はい、すべての機能を無料でご利用いただけます。会員登録やログインも不要です。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q2">
+      <label class="faq-q" for="q2">入力したテキストはサーバーに保存されますか？</label>
+      <div class="faq-a"><div class="faq-a-inner">いいえ。入力されたテキストはブラウザ上でのみ処理され、サーバーには一切送信・保存されません。個人情報や機密情報を含むテキストも安心してご利用いただけます。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q3">
+      <label class="faq-q" for="q3">スマートフォンでも使えますか？</label>
+      <div class="faq-a"><div class="faq-a-inner">はい。スマートフォン・タブレット・PC のどの端末からもご利用いただけます。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q4">
+      <label class="faq-q" for="q4">Twitter の文字数カウントが実際と違うことがありますか？</label>
+      <div class="faq-a"><div class="faq-a-inner">Twitter / X では URL が自動的に短縮され、23文字としてカウントされる仕様があります。当ツールは入力された文字をそのままカウントするため、URL を含む場合は実際の Twitter 上での文字数と異なる場合があります。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q5">
+      <label class="faq-q" for="q5">絵文字はどのようにカウントされますか？</label>
+      <div class="faq-a"><div class="faq-a-inner">絵文字は1文字としてカウントされます。ただし SNS によって絵文字のカウント方法が異なる場合があるため、各 SNS の公式情報もあわせてご確認ください。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q6">
+      <label class="faq-q" for="q6">文字数制限を超えてしまったらどうすればいいですか？</label>
+      <div class="faq-a"><div class="faq-a-inner">SNS チェック欄が赤くなっている場合、その SNS の文字数制限を超えています。テキストエリアの文章を短く編集してください。</div></div>
+    </div>
+
+    <div class="faq-item">
+      <input type="checkbox" id="q7">
+      <label class="faq-q" for="q7">不具合や要望はどこに送ればいいですか？</label>
+      <div class="faq-a"><div class="faq-a-inner"><a href="/contact.html" style="color:#4F46E5;">お問い合わせページ</a>からご連絡ください。</div></div>
+    </div>
+
+  </div>
+</main>
+<footer>
+  <p>&copy; 2025 文字数カウンター · <a href="/">トップ</a> · <a href="/how-to-use.html">使い方</a> · <a href="/privacy-policy.html">プライバシーポリシー</a> · <a href="/contact.html">お問い合わせ</a></p>
+</footer>
+</body>
+</html>
