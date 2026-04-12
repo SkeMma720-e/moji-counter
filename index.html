@@ -446,10 +446,10 @@
 
 <script>
   const SNS = [
-    { name: 'Twitter / X', icon: '🐦', color: '#1D9BF0', bg: '#EFF9FF', limit: 140 },
-    { name: 'Instagram', icon: '📷', color: '#E1306C', bg: '#FFF0F5', limit: 2200 },
-    { name: 'LINE', icon: '💬', color: '#06C755', bg: '#F0FFF4', limit: 1000 },
-    { name: 'Facebook', icon: '👍', color: '#1877F2', bg: '#EFF4FF', limit: 63206 },
+    { name: 'Twitter / X', icon: 'X', color: '#1D9BF0', bg: '#EFF9FF', limit: 140 },
+    { name: 'Instagram', icon: 'IG', color: '#E1306C', bg: '#FFF0F5', limit: 2200 },
+    { name: 'LINE', icon: 'L', color: '#06C755', bg: '#F0FFF4', limit: 1000 },
+    { name: 'Facebook', icon: 'FB', color: '#1877F2', bg: '#EFF4FF', limit: 63206 },
   ];
 
   // SNSカード生成
@@ -505,7 +505,7 @@
       fill.style.width = pct + '%';
       fill.style.background = pct >= 100 ? '#EF4444' : pct >= 80 ? '#F59E0B' : s.color;
       document.getElementById(`sns-count-${i}`).textContent =
-        `${total.toLocaleString()} / ${s.limit.toLocaleString()}${pct >= 100 ? ' ⚠️ 超過' : ''}`;
+        `${total.toLocaleString()} / ${s.limit.toLocaleString()}${pct >= 100 ? ' 超過' : ''}`;
     });
   }
 
